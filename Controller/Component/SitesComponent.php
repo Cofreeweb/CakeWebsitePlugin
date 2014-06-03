@@ -27,13 +27,13 @@ class SitesComponent extends Component
  * Estas propiedaes servirán a SitableBehavior para que al guardar un nuevo registro se coloque automáticamente site_id
  *
  * @param object $controller 
- * @since Shokesu 0.1
  */
   function initialize( Controller $controller)
   {    
     $this->Controller = $controller;
     $this->setAdminSite();
-    $this->setFrontDomain();
+    $this->setFrontDomain( $this->Controller->request->host());
+    
   }
   
   public function startup( Controller $controller)
@@ -76,7 +76,7 @@ class SitesComponent extends Component
  * @return void
  * @since Shokesu 0.1
  */
-  function setFrontDomain()
+  function setFrontDomain( $domain)
   {
     // Si estamos en admin, retornamos
     if( isset( $this->Controller->request->params ['admin']))
@@ -89,9 +89,6 @@ class SitesComponent extends Component
     {
       return;
     }
-    
-    // El dominio del web
-    $domain = $this->Controller->request->host();
 
     // Si dominio no existe se redirige al subdominio comercial
     if( $site = $this->getDomain( $domain))
@@ -101,6 +98,23 @@ class SitesComponent extends Component
       $this->Controller->request->addParams( array(
           'site' => $site ['Site']['slug'],
       ));
+      
+      if( $domain != $this->Controller->request->host())
+      {
+        $this->Controller->redirect( 'http://'. $domain);
+      }
+    }
+    elseif( strpos( $domain, 'www.') !== false)
+    {
+      $domain = str_replace( 'www.', '', $domain);
+      $this->setFrontDomain( $domain);
+    }
+    else
+    {
+      if( isset( $this->settings ['redirect']))
+      {
+        $this->Controller->redirect( $this->settings ['redirect']);
+      }
     }
   }
 
