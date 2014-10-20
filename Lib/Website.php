@@ -6,7 +6,7 @@
 class Website
 {
   
-  public function get( $path)
+  public static function get( $path)
   {
     return Configure::read( "Website.current.Site.$path");
   }

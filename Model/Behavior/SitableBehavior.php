@@ -10,7 +10,7 @@
 class SitableBehavior extends ModelBehavior
 {
   
-  public function beforeSave( Model $Model)
+  public function beforeSave( Model $Model, $options = array())
   {
     if( empty( $this->id) 
         && Configure::read( 'Website.current.Site.id') 
