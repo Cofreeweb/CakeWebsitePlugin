@@ -79,7 +79,7 @@ class SitesComponent extends Component
   function setFrontDomain( $domain)
   {
     // Si estamos en admin, retornamos
-    if( isset( $this->Controller->request->params ['admin']) || $this->Controller->request->params ['plugin'] == 'acl')
+    if( isset( $this->Controller->request->params ['admin']) || strtolower( $this->Controller->request->params ['plugin']) == 'acl')
     {
       return;
     }
