@@ -45,6 +45,9 @@ class SitableBehavior extends ModelBehavior
     }
 
     $Model->noSitable = false;
+
+        CakeLog::write( 'debug', print_r( $query, true));
+
     return $query;  
   }
   
